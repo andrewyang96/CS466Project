@@ -8,6 +8,7 @@ import unittest
 from Bio import SeqIO
 import time
 import ast
+import pickle
 
 """
 Source: http://en.wikipedia.org/wiki/Hirschberg's_algorithm, https://github.com/wuzhigang05/Dynamic-Programming-Linear-Space
@@ -167,8 +168,8 @@ def Hirschberg(x, y):
   return row, column, middle
 
 if __name__ == '__main__':
-  file = open(arguments[1], "r")
-  result = ast.literal_eval(file.read())
+  file = open(arguments[1], "rb")
+  result = pickle.load(file)
   gap = int(arguments[2])
   mismatch = int(arguments[3])
   match = int(arguments[4])
