@@ -3,12 +3,14 @@ import sys
 import random
 from datetime import datetime
 import math
+import pickle
 
 arguments = sys.argv
 
 def write_to_textfile(file_name, list):
-    f=open(file_name, "w+")
-    f.write(str(list))
+    f=open(file_name, "wb")
+    #f.write(str(list))
+    pickle.dump(list, f)
     f.close()
 
 def mutate_sequence(seq):
