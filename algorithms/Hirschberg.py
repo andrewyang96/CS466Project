@@ -7,6 +7,7 @@ import re
 import unittest
 from Bio import SeqIO
 import time
+import ast
 
 """
 Source: http://en.wikipedia.org/wiki/Hirschberg's_algorithm, https://github.com/wuzhigang05/Dynamic-Programming-Linear-Space
@@ -173,21 +174,28 @@ def Hirschberg(x, y):
   return row, column, middle
 
 if __name__ == '__main__':
-  start_time = time.time()
-  seqstr1 = ''.join(parse_fasta(arguments[1]))
-  seqstr2 = ''.join(parse_fasta(arguments[2]))
-  difference = []
-  for i, (x, y) in enumerate(zip([seqstr1], [seqstr2])):
-    row, column, middle = Hirschberg(x, y)
-    difference.append(middle)
-    print(row)
-    print(middle)
-    print(column)
-    print
-  alignment = ''.join(difference)
-  num_matches = alignment.count('|')
-  num_mismatches = alignment.count(':')
-  num_gaps = alignment.count('x')
-  score = num_matches * match + num_gaps * -500 + num_mismatches * substitution
-  print(score)
-  print("--- %s seconds ---" % (time.time() - start_time))
+  file = open(arguments[1], "r")
+  result = ast.literal_eval(file.read())
+  #print(result)
+  for item in result:
+      seqstr1 = item[0]
+      seqstr2 = item[1]
+
+  #seqstr1 = ''.join(parse_fasta(arguments[1]))
+  #seqstr2 = ''.join(parse_fasta(arguments[2]))
+      difference = []
+      start_time = time.time()
+      for i, (x, y) in enumerate(zip([seqstr1], [seqstr2])):
+        row, column, middle = Hirschberg(x, y)
+        difference.append(middle)
+        print(row)
+        print(middle)
+        print(column)
+        print
+      alignment = ''.join(difference)
+      num_matches = alignment.count('|')
+      num_mismatches = alignment.count(':')
+      num_gaps = alignment.count('x')
+      score = num_matches * match + num_gaps * -500 + num_mismatches * substitution
+      print(score)
+      print("--- %s seconds ---" % (time.time() - start_time))
