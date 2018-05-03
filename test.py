@@ -1,5 +1,6 @@
 from algorithms.global_alignment import needleman_wunsch
 from algorithms.local_alignment import smith_waterman
+from algorithms.semiglobal_alignment import glocal_alignment
 
 import pickle
 import sys
@@ -9,24 +10,29 @@ import time
 sys.setrecursionlimit(25000)
 
 if __name__ == '__main__':
-    h_commands = ['python', 'algorithms/Hirschberg.py', 'mutatedSeq.txt', '-2', '-1', '2', '>', 'HirschbergResutls.txt']
     with open('mutatedSeq.txt', 'rb') as f:
         seqs = pickle.load(f)
 
-    print('Testing global')
+    print('Testing 20 global')
+    global_results = []
     start = time.time()
-    global_result = needleman_wunsch(seqs[0], seqs[1])
+    for i in range(20):
+        global_results.append(needleman_wunsch(seqs[i][0], seqs[i][1]))
     end = time.time()
     global_time_elapsed = end - start
 
-    print('Testing local')
+    print('Testing 20 local')
+    local_results = []
     start = time.time()
-    local_result = smith_waterman(seqs[0], seqs[1])
+    for i in range(20):
+        local_results.append(smith_waterman(seqs[i][0], seqs[i][1]))
     end = time.time()
     local_time_elapsed = end - start
 
-    print('Testing Hirschberg')
+    print('Testing 20 glocal')
+    glocal_results = []
     start = time.time()
-    subprocess.call(h_commands)
+    for i in range(20):
+        glocal_results.append(glocal_alignment(seqs[i][0], seqs[i][1]))
     end = time.time()
-    h_time_elapsed = end - start
+    glocal_time_elapsed = end - start
