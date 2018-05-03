@@ -16,11 +16,6 @@ Source: http://en.wikipedia.org/wiki/Hirschberg's_algorithm, https://github.com/
 arguments = sys.argv
 
 
-insertion    = -500
-deletion     = -500
-substitution = -4
-match = 5
-
 def parse_fasta(fasta_file):
     for seq_record in SeqIO.parse(fasta_file, "fasta"):
         #print(len(seq_record))  #print sequence length
@@ -32,9 +27,8 @@ def lastLineAlign(x, y):
   output: an array with a length of |y| that contains the score for the alignment
           between x and y
   """
-  global insertion
-  global deletion
-  global substitution
+  global gap
+  global mismatch
   global match
   row = y
   column = x
@@ -44,19 +38,19 @@ def lastLineAlign(x, y):
 
 
   for i in range(1, minLen + 1):
-    prev[i] = prev[i-1] + insertion
+    prev[i] = prev[i-1] + gap
 
   current[0] = 0
   for j in range(1, len(column) + 1):
-    current[0] += deletion
+    current[0] += gap
     for i in range(1, minLen + 1):
       if row[i-1] == column[j-1]:
         try:
-          current[i] = max(current[i-1] + insertion, prev[i-1] + match, prev[i] + deletion)
+          current[i] = max(current[i-1] + gap, prev[i-1] + match, prev[i] + gap)
         except:
           pdb.set_trace()
       else:
-        current[i] = max(current[i-1] + insertion, prev[i-1] + substitution, prev[i] + deletion)
+        current[i] = max(current[i-1] + gap, prev[i-1] + mismatch, prev[i] + gap)
     prev = copy.deepcopy(current)
 
   return current
@@ -72,9 +66,8 @@ def partitionY(scoreL, scoreR):
   return max_index
 
 def dynamicProgramming(x, y):
-  global insertion
-  global deletion
-  global substitution
+  global gap
+  global mismatch
   global match
   # M records is the score array
   # Path stores the path information, inside of Path:
@@ -85,27 +78,27 @@ def dynamicProgramming(x, y):
   Path = np.empty((len(x) + 1, len(y) + 1), dtype=object)
 
   for i in range(1, len(y) + 1):
-    M[0][i] = M[0][i-1] + insertion
+    M[0][i] = M[0][i-1] + gap
     Path[0][i] = "l"
   for j in range(1, len(x) + 1):
-    M[j][0] = M[j-1][0] + deletion
+    M[j][0] = M[j-1][0] + gap
     Path[j][0] = "u"
 
   for i in range(1, len(x) + 1):
     for j in range(1, len(y) + 1):
       if x[i-1] == y[j-1]:
-        M[i][j] = max(M[i-1][j-1] + match, M[i-1][j] + insertion, M[i][j-1] + deletion)
+        M[i][j] = max(M[i-1][j-1] + match, M[i-1][j] + gap, M[i][j-1] + gap)
         if M[i][j] == M[i-1][j-1] + match:
           Path[i][j] =  "d"
-        elif M[i][j] == M[i-1][j] + insertion:
+        elif M[i][j] == M[i-1][j] + gap:
           Path[i][j] = "u"
         else:
           Path[i][j] = "l"
       else:
-        M[i][j] = max(M[i-1][j-1] + substitution, M[i-1][j] + insertion, M[i][j-1] + deletion)
-        if M[i][j] == M[i-1][j-1] + substitution:
+        M[i][j] = max(M[i-1][j-1] + mismatch, M[i-1][j] + gap, M[i][j-1] + gap)
+        if M[i][j] == M[i-1][j-1] + mismatch:
           Path[i][j] =  "d"
-        elif M[i][j] == M[i-1][j] + insertion:
+        elif M[i][j] == M[i-1][j] + gap:
           Path[i][j] = "u"
         else:
           Path[i][j] = "l"
@@ -176,6 +169,10 @@ def Hirschberg(x, y):
 if __name__ == '__main__':
   file = open(arguments[1], "r")
   result = ast.literal_eval(file.read())
+  gap = int(arguments[2])
+  mismatch = int(arguments[3])
+  match = int(arguments[4])
+
   #print(result)
   for item in result:
       seqstr1 = item[0]
@@ -196,6 +193,6 @@ if __name__ == '__main__':
       num_matches = alignment.count('|')
       num_mismatches = alignment.count(':')
       num_gaps = alignment.count('x')
-      score = num_matches * match + num_gaps * -500 + num_mismatches * substitution
+      score = num_matches * match + num_gaps * -500 + num_mismatches * mismatch
       print(score)
       print("--- %s seconds ---" % (time.time() - start_time))
