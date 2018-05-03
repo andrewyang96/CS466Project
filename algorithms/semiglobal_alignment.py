@@ -3,7 +3,7 @@
 import numpy as np
 
 ## returns optimal score and the aligned sequences ##
-def glocal_alignment(seq1, seq2, match, gap_pen, mismatch_pen):
+def glocal_alignment(seq1, seq2, match=2, gap_pen=-1, mismatch_pen=-2):
 	#initialize final sequences
 	aligned1 = ""
 	aligned2 = ""
