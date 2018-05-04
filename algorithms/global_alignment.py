@@ -7,7 +7,7 @@ import numpy as np
 
 NONE, LEFT, UP, DIAG = range(4)
 
-def needleman_wunsch(seq1, seq2, match=2, mismatch=-1, gap_start_penalty=0, gap_extend_penalty=-2):
+def needleman_wunsch(seq1, seq2, match=2, mismatch=-1, gap_start_penalty=-2, gap_extend_penalty=-1):
     """Returns the two alignments and the optimal score."""
     assert match >= 0
     assert mismatch <= 0
