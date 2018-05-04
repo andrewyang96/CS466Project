@@ -168,32 +168,36 @@ def Hirschberg(x, y):
   return row, column, middle
 
 if __name__ == '__main__':
-  file = open(arguments[1], "rb")
-  result = pickle.load(file)
-  gap = int(arguments[2])
-  mismatch = int(arguments[3])
-  match = int(arguments[4])
+    file = open(arguments[1], "rb") #mutatedSeq.txt
+    result = pickle.load(file)
+    file2 = open(arguments[2], "rb") #mutatedSeqIDs.txt
+    result2 = pickle.load(file2)
+    gap = int(arguments[3])
+    mismatch = int(arguments[4])
+    match = int(arguments[5])
 
-  #print(result)
-  for item in result:
-      seqstr1 = item[0]
-      seqstr2 = item[1]
+   #print(result)
+    for item, id in zip(result, result2):
+        seqstr1 = item[0]
+        seqstr2 = item[1]
 
-  #seqstr1 = ''.join(parse_fasta(arguments[1]))
-  #seqstr2 = ''.join(parse_fasta(arguments[2]))
-      difference = []
-      start_time = time.time()
-      for i, (x, y) in enumerate(zip([seqstr1], [seqstr2])):
-        row, column, middle = Hirschberg(x, y)
-        difference.append(middle)
-        print(row)
-        print(middle)
-        print(column)
-        print
-      alignment = ''.join(difference)
-      num_matches = alignment.count('|')
-      num_mismatches = alignment.count(':')
-      num_gaps = alignment.count('x')
-      score = num_matches * match + num_gaps * -500 + num_mismatches * mismatch
-      print(score)
-      print("--- %s seconds ---" % (time.time() - start_time))
+        difference = []
+        start_time = time.time()
+        for i, (x, y) in enumerate(zip([seqstr1], [seqstr2])):
+          row, column, middle = Hirschberg(x, y)
+          difference.append(middle)
+          print("Aligning sequences "+'{} and {}: '.format(id[0], id[1]) + '\n')
+          print(row)
+          #print(middle)
+          print('\n')
+          print(column)
+          print
+        alignment = ''.join(difference)
+        num_matches = alignment.count('|')
+        num_mismatches = alignment.count(':')
+        num_gaps = alignment.count('x')
+        score = num_matches * match + num_gaps * gap + num_mismatches * mismatch
+        print('\n')
+        print('Optimal score is ' + str(score))
+        print("--- %s seconds ---" % (time.time() - start_time))
+        print("#" * 40)
