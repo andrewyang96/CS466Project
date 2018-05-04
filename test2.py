@@ -10,9 +10,9 @@ import time
 sys.setrecursionlimit(25000)
 
 if __name__ == '__main__':
-    with open('mutatedSeq.txt', 'rb') as f:
+    with open('deletedSeq.txt', 'rb') as f:
         seqs = pickle.load(f)
-    with open('mutatedSeqIDs.txt', 'rb') as f2:
+    with open('deletedSeqIDs.txt', 'rb') as f2:
         ids = pickle.load(f2)
 
     print('Testing 20 global')
@@ -31,7 +31,6 @@ if __name__ == '__main__':
         print('Global time elapsed: ' + str(global_time_elapsed))
         print("#" * 40)
         print('\n')
-
 
     print('\n')
     print('Testing 20 local')
