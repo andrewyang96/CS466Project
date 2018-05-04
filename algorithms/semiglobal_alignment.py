@@ -3,7 +3,7 @@
 import numpy as np
 
 ## returns optimal score and the aligned sequences ##
-def glocal_alignment(seq1, seq2, match=2, gap_pen=-1, mismatch_pen=-2):
+def glocal_alignment(seq1, seq2, match=2, gap_pen=-2, mismatch_pen=-1):
 	#initialize final sequences
 	aligned1 = ""
 	aligned2 = ""
@@ -12,7 +12,7 @@ def glocal_alignment(seq1, seq2, match=2, gap_pen=-1, mismatch_pen=-2):
 	len2 = len(seq2) + 1
 
 	#make sure seq2 is smaller than seq1
-	if len1 < len2: 
+	if len1 < len2:
 		seq1, seq2 = seq2, seq1
 		len1, len2 = len2, len1
 
@@ -42,7 +42,7 @@ def glocal_alignment(seq1, seq2, match=2, gap_pen=-1, mismatch_pen=-2):
 				scores[i,j] = upScore
 
 			traceback[i, j] = idx #0 is diag, 1 is left, 2 is up in the traceback matrix
-	
+
 	maxIdx = np.argmax(scores[-1]) #index of max score
 
 	#figures out actual sequences
