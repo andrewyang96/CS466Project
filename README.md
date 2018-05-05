@@ -18,10 +18,10 @@ You can run global, local, and semiglobal alignments by first modifying the para
 of each function in the test.py and/or test2.py.
 
   Run in the terminal (for main dataset):
-    python test.py  
+    <code> python test.py  </code>
 
   Run in the terminal (for shortened dataset):
-    python test2.py
+    <code> python test2.py </code>
 
 You can run Hirschberg algorithm by modifying the arguments you pass in when typing in the terminal.
 
