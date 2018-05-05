@@ -26,5 +26,4 @@ of each function in the test.py and/or test2.py.
 You can run Hirschberg algorithm by modifying the arguments you pass in when typing in the terminal.
 
 To run Hirschberg algorithm:
-
-python algorithm/Hirschberg.py <dataset .txt file> <dataset IDs .txt file> <gap_penalty> <mismatch> <match>
+  "python algorithm/Hirschberg.py <dataset .txt file> <dataset IDs .txt file> <gap_penalty> <mismatch> <match>"
