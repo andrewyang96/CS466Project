@@ -27,4 +27,4 @@ You can run Hirschberg algorithm by modifying the arguments you pass in when typ
 
 To run Hirschberg algorithm:
   <code> python algorithm/Hirschberg.py <dataset .txt file> <dataset IDs .txt file> <gap_penalty>
-  <mismatch> <match> </code>
+  <mismatch_cost> <match_cost> </code>
